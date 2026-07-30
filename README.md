@@ -5,19 +5,18 @@ current session as a clean, readable markdown file.
 
 ## Why this exists
 
-I kept wanting to keep things Claude and I had worked out together — a debugging trail, a
-customer email drafted in a language I don't speak, a decision and the reasoning behind it.
-My only option was selecting text in the terminal and copy-pasting it somewhere, which
-mangles the wrapping, loses the code blocks, and takes a scrollback buffer that has usually
-already eaten the part I actually wanted.
+I kept wanting to copy paste stuff from claude code — a debugging trail, some text, but Claude code is so annoying when working with text.
 
-Claude Code ships a built-in `/export`, but it hands you the raw conversation. I wanted
+My only option was selecting text in the terminal and copy-pasting it somewhere, which
+mangles the wrapping, loses the code blocks, or adds strange characters.
+
+Claude Code ships a built-in `/export`, but it hands you the raw conversation in a txt. I wanted
 something I could paste straight into notes, a PR description, or a docs page: proper
 headings per turn, code fences intact, tool noise collapsed down to one line, and my own
 choice of filename and folder.
 
 So this reads the session transcript Claude Code already writes to disk and renders it as
-markdown.
+markdown instead so you can copy paste easily.
 
 ## Install
 
@@ -72,11 +71,11 @@ Paths are relative to whatever directory you're working in.
 
 ### Options
 
-| Flag              | Effect                                                        |
-| ----------------- | ------------------------------------------------------------- |
-| `--with-thinking` | Include Claude's reasoning blocks, in collapsed `<details>`    |
-| `--full-tools`    | Full tool inputs plus an excerpt of each result                |
-| `--no-tools`      | Prose only — no tool calls at all                              |
+| Flag              | Effect                                                      |
+| ----------------- | ----------------------------------------------------------- |
+| `--with-thinking` | Include Claude's reasoning blocks, in collapsed `<details>` |
+| `--full-tools`    | Full tool inputs plus an excerpt of each result             |
+| `--no-tools`      | Prose only — no tool calls at all                           |
 
 By default you get one compact line per tool call (`> 🔧 **Bash** — \`{...}\``) and no
 results, which keeps the transcript readable without pretending the work didn't happen.
