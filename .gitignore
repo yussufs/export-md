@@ -1,0 +1,8 @@
+# Exported conversations land in the cwd and contain whatever you discussed.
+# Ignore stray .md files at the repo root, but keep the ones that belong here.
+/*.md
+!/README.md
+
+__pycache__/
+*.pyc
+.DS_Store
