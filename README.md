@@ -5,7 +5,7 @@ current session as a clean, readable markdown file.
 
 ## Why this exists
 
-I kept wanting to copy paste stuff from claude code — a debugging trail, some text, but Claude code is so annoying when working with text.
+I kept wanting to copy paste stuff from claude code — a debugging trail, some text, but Claude Code (in the CLI) is so annoying when working with text.
 
 My only option was selecting text in the terminal and copy-pasting it somewhere, which
 mangles the wrapping, loses the code blocks, or adds strange characters.
