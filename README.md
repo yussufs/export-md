@@ -24,8 +24,10 @@ Requires `python3` (3.6+, already present on macOS and most Linux distros).
 
 **For all your projects:**
 
+Replace `OWNER` with the repository owner.
+
 ```bash
-git clone https://github.com/yussufs/export-md.git
+git clone https://github.com/OWNER/export-md.git
 cd export-md
 ./install.sh
 ```
@@ -48,7 +50,7 @@ Copy two files and fix one path.
 1. `scripts/export-md.py` → `~/.claude/scripts/export-md.py`
 2. `commands/export-md.md` → `~/.claude/commands/export-md.md`
 3. In that second file, replace both occurrences of `__SCRIPT_PATH__` with the real,
-   absolute path to the script — e.g. `/Users/you/.claude/scripts/export-md.py`.
+   absolute path to the script — e.g. `/path/to/.claude/scripts/export-md.py`.
 
 Slash commands don't expand `~` or `$HOME` inside `allowed-tools`, which is why step 3
 needs a literal path. For a project-scoped install, put the files under `.claude/` in the
@@ -60,7 +62,7 @@ for anyone who clones it.
 ## Usage
 
 ```
-/export-md                      # → ./2026-07-31-0812-a1b2c3d4.md
+/export-md                      # → ./2026-01-15-0812-a1b2c3d4.md
 /export-md thread.md            # → ./thread.md
 /export-md notes/deep/x.md      # nested dirs are created for you
 /export-md ~/Desktop/chat.md    # absolute and ~ paths both work
@@ -87,22 +89,22 @@ ended:
 
 ```bash
 python3 ~/.claude/scripts/export-md.py --list
-# 2026-07-31 08:08  52c16e28-5ec4-4d1f-b73f-aab39852c7fa  (175 KB)
-# 2026-07-30 16:38  fd78eef7-232d-4a02-8794-f1c5d838b03e  (4570 KB)
+# 2026-01-15 08:08  a1b2c3d4-0000-4000-8000-000000000000  (175 KB)
+# 2026-01-14 16:38  e5f6a7b8-0000-4000-8000-000000000000  (4570 KB)
 
-python3 ~/.claude/scripts/export-md.py --session fd78eef7-232d-4a02-8794-f1c5d838b03e out.md
+python3 ~/.claude/scripts/export-md.py --session a1b2c3d4-0000-4000-8000-000000000000 out.md
 ```
 
 ## What you get
 
 ```markdown
-# Session 52c16e28
+# Session a1b2c3d4
 
-- **Date**: 2026-07-31 08:12
-- **Project**: `/Users/you/code/my-app`
+- **Date**: 2026-01-15 08:12
+- **Project**: `/path/to/my-app`
 - **Branch**: `main`
 - **Model**: `claude-opus-5`
-- **Session**: `52c16e28-5ec4-4d1f-b73f-aab39852c7fa`
+- **Session**: `a1b2c3d4-0000-4000-8000-000000000000`
 
 ---
 
