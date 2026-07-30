@@ -67,6 +67,8 @@ for anyone who clones it.
 /export-md notes/deep/x.md      # nested dirs are created for you
 /export-md ~/Desktop/chat.md    # absolute and ~ paths both work
 /export-md mythread             # .md is appended if you leave it off
+/export-md --last 10            # only the last 10 turns
+/export-md recent.md --last 4   # combine with a path
 ```
 
 Paths are relative to whatever directory you're working in.
@@ -75,9 +77,15 @@ Paths are relative to whatever directory you're working in.
 
 | Flag              | Effect                                                      |
 | ----------------- | ----------------------------------------------------------- |
+| `--last N`        | Only the last N turns, newest end of the conversation       |
 | `--with-thinking` | Include Claude's reasoning blocks, in collapsed `<details>` |
 | `--full-tools`    | Full tool inputs plus an excerpt of each result             |
 | `--no-tools`      | Prose only — no tool calls at all                           |
+
+A turn is one `## User` or `## Claude` heading, so `--last 4` gives you roughly the last two
+exchanges, each with its tool calls attached. When the export is trimmed, the header records
+it (`- **Scope**: last 4 of 37 turns`). Asking for more turns than exist just exports
+everything.
 
 By default you get one compact line per tool call (`> 🔧 **Bash** — \`{...}\``) and no
 results, which keeps the transcript readable without pretending the work didn't happen.

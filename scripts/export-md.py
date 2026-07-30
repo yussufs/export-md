@@ -13,6 +13,7 @@ to the current directory as <date>-<session>.md.
 
 Options:
     --session ID     Export a specific session id (default: most recent for this cwd)
+    --last N         Export only the last N turns of the conversation
     --with-thinking  Include the assistant's thinking blocks
     --no-tools       Omit tool calls entirely (default: one compact line per call)
     --full-tools     Include full tool inputs and result excerpts
@@ -183,17 +184,36 @@ def build(records: list[dict], opts) -> tuple[list[str], dict]:
 	return out, meta
 
 
+def turn_starts(sections: list[str]) -> list[int]:
+	"""Indices of the sections that open a turn; the rest are trailing tool output."""
+	return [i for i, s in enumerate(sections) if s.startswith('## ')]
+
+
+def tail_turns(sections: list[str], n: int) -> list[str]:
+	"""Keep the last n turns, each with the tool output that follows it."""
+	starts = turn_starts(sections)
+	if len(starts) <= n:
+		return sections
+	return sections[starts[-n]:]
+
+
 def main() -> None:
 	ap = argparse.ArgumentParser(add_help=True)
 	ap.add_argument(
 		'output', nargs='?', help='output path, relative to cwd (default: <date>-<session>.md)'
 	)
 	ap.add_argument('--session')
+	ap.add_argument(
+		'--last', type=int, metavar='N', help='export only the last N turns'
+	)
 	ap.add_argument('--with-thinking', action='store_true')
 	ap.add_argument('--no-tools', action='store_true')
 	ap.add_argument('--full-tools', action='store_true')
 	ap.add_argument('--list', action='store_true')
 	opts = ap.parse_args()
+
+	if opts.last is not None and opts.last < 1:
+		ap.error('--last takes a positive number of turns')
 
 	cwd = Path.cwd()
 
@@ -214,6 +234,10 @@ def main() -> None:
 
 	if not sections:
 		sys.exit(f'Nothing to export from {src.name}')
+
+	total_turns = len(turn_starts(sections))
+	if opts.last is not None:
+		sections = tail_turns(sections, opts.last)
 
 	stamp = datetime.fromtimestamp(src.stat().st_mtime)
 	if opts.output:
@@ -236,10 +260,13 @@ def main() -> None:
 		header.append(f'- **Branch**: `{meta["branch"]}`')
 	if meta.get('model'):
 		header.append(f'- **Model**: `{meta["model"]}`')
-	header += [f'- **Session**: `{meta.get("session") or src.stem}`', '', '---', '']
+	header.append(f'- **Session**: `{meta.get("session") or src.stem}`')
+	turns = len(turn_starts(sections))
+	if turns < total_turns:
+		header.append(f'- **Scope**: last {turns} of {total_turns} turns')
+	header += ['', '---', '']
 
 	dest.write_text('\n'.join(header) + '\n\n---\n\n'.join(sections) + '\n')
-	turns = sum(1 for s in sections if s.startswith('## '))
 	print(f'Exported {turns} turns → {dest}')
 
 

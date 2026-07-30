@@ -1,6 +1,6 @@
 ---
 description: Export this session's conversation to a markdown file
-argument-hint: [output-path] [--with-thinking] [--full-tools] [--no-tools]
+argument-hint: [output-path] [--last N] [--with-thinking] [--full-tools] [--no-tools]
 allowed-tools: Bash(python3 __SCRIPT_PATH__:*)
 ---
 
